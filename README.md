@@ -71,8 +71,12 @@ pyside_template_window/
 │   ├── start.py         # 初回起動
 │   ├── restart.py       # 再起動
 │   └── restore.py       # 復元
-├── README.md            # このファイル
-├── CHANGELOG.md         # 変更ログ
+├── README.md            # このファイル（日本語ドキュメント）
+├── README_EN.md         # 英語版ドキュメント
+├── README_CN.md         # 中国語版ドキュメント
+├── CHANGELOG.md         # 変更ログ（日本語）
+├── CHANGELOG_EN.md      # 変更ログ（英語）
+├── CHANGELOG_CN.md      # 変更ログ（中国語）
 └── LICENSE              # ライセンス情報
 ```
 
@@ -106,7 +110,7 @@ window.show()
 |------|------|
 | `NAME` | ウィンドウ名 (`'PySideTemplate'`) |
 | `WORKSPACE_CONTROL_NAME` | WorkspaceControl 名 (`'PySideTemplateWorkspaceControl'`) |
-| `_TITLE` | ウィンドウタイトル (`'PySide Template v1.0.0'`) |
+| `_TITLE` | ウィンドウタイトル (`'PySide Template v1.0.1'`) |
 
 ### app.main モジュール
 

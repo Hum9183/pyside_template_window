@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.1] - 2025-10-10
+
+### Fixed
+- Added multilingual documentation files listing in README "Project Structure" section
+
 ## [1.0.0] - 2025-10-10
 
 ### Added

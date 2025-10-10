@@ -69,8 +69,10 @@ pyside_template_window/
 │   └── restore.py       # Restore
 ├── README.md            # Japanese documentation
 ├── README_EN.md         # This file (English documentation)
+├── README_CN.md         # Chinese documentation
 ├── CHANGELOG.md         # Changelog (Japanese)
 ├── CHANGELOG_EN.md      # Changelog (English)
+├── CHANGELOG_CN.md      # Changelog (Chinese)
 └── LICENSE              # License information
 ```
 
@@ -104,7 +106,7 @@ window.show()
 |----------|-------------|
 | `NAME` | Window name (`'PySideTemplate'`) |
 | `WORKSPACE_CONTROL_NAME` | WorkspaceControl name (`'PySideTemplateWorkspaceControl'`) |
-| `_TITLE` | Window title (`'PySide Template v1.0.0'`) |
+| `_TITLE` | Window title (`'PySide Template v1.0.1'`) |
 
 ### app.main Module
 

@@ -106,7 +106,7 @@ window.show()
 |------|------|
 | `NAME` | 窗口名称 (`'PySideTemplate'`) |
 | `WORKSPACE_CONTROL_NAME` | WorkspaceControl 名称 (`'PySideTemplateWorkspaceControl'`) |
-| `_TITLE` | 窗口标题 (`'PySide Template v1.0.0'`) |
+| `_TITLE` | 窗口标题 (`'PySide Template v1.0.1'`) |
 
 ### app.main 模块
 
