@@ -78,7 +78,11 @@ def safe_wrap_instance(ptr: MayaPointer, widget_type: Type[T]) -> T:
 
     Raises:
         RuntimeError: ラッピングに失敗した場合
+        TypeError: widget_type が不正な型の場合
     """
+    if isinstance(widget_type, type) is False:
+        raise TypeError(f'widget_type はクラスである必要があります。{type(widget_type).__name__} が渡されました')
+
     try:
         return wrapInstance(ptr, widget_type)
     except Exception as e:
