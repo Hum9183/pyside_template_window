@@ -10,10 +10,8 @@ from typing import NewType, Optional, Type, TypeVar
 from maya import OpenMayaUI as omui
 
 try:
-    from PySide6.QtWidgets import QMainWindow
     from shiboken6 import wrapInstance
 except ImportError:
-    from PySide2.QtWidgets import QMainWindow
     from shiboken2 import wrapInstance
 
 # Maya 専用型の定義
