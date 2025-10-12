@@ -1,8 +1,10 @@
 import inspect
+import logging
 from typing import ClassVar, Optional
 
 from maya import cmds
 from maya.app.general.mayaMixin import MayaQWidgetDockableMixin
+
 try:
     from PySide6.QtGui import QAction
     from PySide6.QtWidgets import QMainWindow, QPushButton, QWidget
@@ -15,6 +17,8 @@ from ._metadata import __version__
 from .app import restart, restore
 from .utils import MayaPointer
 
+logger = logging.getLogger(__name__)
+
 
 class PySideTemplateWindow(MayaQWidgetDockableMixin, QMainWindow):
     """
@@ -22,12 +26,13 @@ class PySideTemplateWindow(MayaQWidgetDockableMixin, QMainWindow):
 
     WorkspaceControl を使用して Maya の UI にドッキング可能(Dockable)かつ復元(Restore)可能なウィンドウです。
     """
+
     NAME: ClassVar[str] = 'PySideTemplate'
     WORKSPACE_CONTROL_NAME: ClassVar[str] = f'{NAME}WorkspaceControl'
     _TITLE: ClassVar[str] = f'PySide Template v{__version__}'
     _instance: ClassVar[Optional['PySideTemplateWindow']] = None  # GC に破棄されないように保持しておく用
 
-    def __init__(self, parent: Optional[QWidget]=None, *args, **kwargs) -> None:
+    def __init__(self, parent: Optional[QWidget] = None, *args, **kwargs) -> None:
         super().__init__(parent=parent, *args, **kwargs)
         self.setObjectName(PySideTemplateWindow.NAME)
         self._init_ui()
@@ -115,4 +120,4 @@ class PySideTemplateWindow(MayaQWidgetDockableMixin, QMainWindow):
         """
         ダミーのメッセージを出力します
         """
-        print('Hello, World!')
+        logger.info('Hello, World!')

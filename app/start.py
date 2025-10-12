@@ -9,6 +9,7 @@
     2. このファイルの内容をコピー&ペーストして実行
 """
 
+
 def start_pyside_template_window() -> None:
     """
     ウィンドウを起動します
@@ -16,6 +17,7 @@ def start_pyside_template_window() -> None:
     既存のウィンドウがある場合は再表示し、ない場合は新規作成します。
     """
     from pyside_template_window import start
+
     start()
 
 

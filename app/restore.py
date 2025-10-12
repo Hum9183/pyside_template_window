@@ -6,6 +6,7 @@ Maya の WorkspaceControl 機能による自動復元処理を行います。
 このモジュールは inspect.getsource() で取得して cmds.workspaceControl の uiScript に渡すことを想定しています。
 """
 
+
 def restore_pyside_template_window() -> None:
     """
     ウィンドウを復元します
@@ -22,6 +23,7 @@ def restore_pyside_template_window() -> None:
         RuntimeError: 復元処理に失敗した場合
     """
     from pyside_template_window import restore
+
     restore()
 
 

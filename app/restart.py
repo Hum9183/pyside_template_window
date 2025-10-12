@@ -7,6 +7,7 @@
 ただしコピー&ペーストして Maya のスクリプトエディターで直接実行しても構いません。
 """
 
+
 def restart_pyside_template_window() -> None:
     """
     ウィンドウを再起動します
@@ -20,12 +21,18 @@ def restart_pyside_template_window() -> None:
         3. 新しいウィンドウインスタンスの作成・表示
     """
     import importlib
+    import logging
 
     from pyside_template_window import window
     from pyside_template_window.app import main
 
+    logger = logging.getLogger(__name__)
+
+    logger.debug('モジュールをリロードしています...')
     importlib.reload(window)
     importlib.reload(main)
+
+    logger.debug('ウィンドウを再起動しています...')
     main.restart()
 
 

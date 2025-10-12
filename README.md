@@ -1,16 +1,16 @@
 # PySide Template Window for Maya
 
-Maya用のPySideテンプレートウィンドウプロジェクトです。WorkspaceControlを使用したドッキング可能かつ復元可能なウィンドウのテンプレートです。
+A PySide template window project for Maya that provides dockable and restorable windows using WorkspaceControl.
 
-[English Version](README_EN.md) | [中文版](README_CN.md)
+[日本語版](docs/README.ja.md) | [中文版](docs/README.zh-CN.md)
 
-## 特徴
+## Features
 
-- ✅ **WorkspaceControl対応**: Mayaのワークスペースにドッキング可能です
-- ✅ **復元機能**: Maya起動時に自動で復元します
-- ✅ **リロード機能**: 素早いリロードで開発を効率化します
+- ✅ **WorkspaceControl Integration**: Seamlessly docks to Maya's workspace
+- ✅ **Auto-Restore**: Automatically restores when Maya starts
+- ✅ **Hot Reload**: Quick module reloading for efficient development
 
-## 動作環境
+## Supported Versions
 
 - Maya 2022
 - Maya 2023
@@ -18,12 +18,11 @@ Maya用のPySideテンプレートウィンドウプロジェクトです。Work
 - Maya 2025
 - Maya 2026
 
-## インストール
+## Installation
 
-### ファイル配置
+### File Placement
 
-Mayaのscriptsフォルダーにプロジェクトを配置してください。
-パスが通っている場所ならどこでもOKです。
+Place the project in Maya's scripts folder or any directory in the Python path.
 
 ```
 ~/Documents/maya/scripts/
@@ -40,177 +39,198 @@ Mayaのscriptsフォルダーにプロジェクトを配置してください。
         └── restore.py
 ```
 
-## 使用方法
+## Usage
 
-### 初回起動
+### Initial Launch
 
-start.pyのテキストをMayaのスクリプトエディターで実行してください。
+Copy and paste the contents of `start.py` into Maya's Script Editor and execute.
 
-### 開発時の再起動
+### Development Restart
 
-ウィンドウのDevメニューのRestartを押下してください。
-もしくはrestart.pyのテキストをスクリプトエディターで実行してください。
-これによりリロードされた状態で起動します。
+Click "Restart" from the window's Dev menu, or copy and paste the contents of `restart.py` into the Script Editor and execute. This reloads the modules and restarts the window.
 
-### Maya起動時の自動復元
+### Auto-Restore on Maya Startup
 
-Maya起動時にウィンドウが自動的に復元されます。
-restore.pyがそれにあたりますがこれはスクリプトエディターで実行するものではないため注意してください。
+The window automatically restores when Maya starts. The `restore.py` script handles this functionality (it's not intended for manual execution in the Script Editor).
 
-## プロジェクト構造
+## Project Structure
 
 ```
 pyside_template_window/
-├── __init__.py          # パッケージ初期化
-├── _metadata.py         # パッケージメタデータ（バージョン・作者情報）
-├── window.py            # メインウィンドウクラス
-├── utils.py             # ユーティリティ関数
+├── __init__.py             # Package initialization
+├── _metadata.py            # Package metadata (version, author info)
+├── window.py               # Main window class
+├── utils.py                # Utility functions
 ├── app/
-│   ├── __init__.py      # appパッケージ初期化
-│   ├── main.py          # 起動のコア機能（start/restart/restore）
-│   ├── start.py         # 初回起動
-│   ├── restart.py       # 再起動
-│   └── restore.py       # 復元
-├── README.md            # このファイル（日本語ドキュメント）
-├── README_EN.md         # 英語版ドキュメント
-├── README_CN.md         # 中国語版ドキュメント
-├── CHANGELOG.md         # 変更ログ（日本語）
-├── CHANGELOG_EN.md      # 変更ログ（英語）
-├── CHANGELOG_CN.md      # 変更ログ（中国語）
-└── LICENSE              # ライセンス情報
+│   ├── __init__.py         # App package initialization
+│   ├── main.py             # Core launch functionality (start/restart/restore)
+│   ├── start.py            # Initial launch
+│   ├── restart.py          # Restart
+│   └── restore.py          # Restore
+├── docs/
+│   ├── README.ja.md        # Japanese documentation
+│   ├── README.zh-CN.md     # Chinese documentation
+│   ├── CHANGELOG.ja.md     # Changelog (Japanese)
+│   └── CONTRIBUTING.ja.md  # Contribution guide (Japanese)
+├── README.md               # This file (English documentation)
+├── CHANGELOG.md            # Changelog (English)
+├── CONTRIBUTING.md         # Contribution guide (English)
+└── LICENSE                 # License information
 ```
 
-## API リファレンス
+## API Reference
 
-### PySideTemplateWindow クラス
+### PySideTemplateWindow Class
 
-メインのウィンドウクラスです。
+The main window class for the template.
 
-**通常の使用では直接インスタンス化する必要はありません。** app/main.py内で内部的にインスタンス化するのが基本です。
+**Normal usage does not require direct instantiation.** The class is internally instantiated within `app/main.py`.
 
 ```python
-# app/main.py での使用例
+# Usage example in app/main.py
 from ..window import PySideTemplateWindow
 
-# インスタンス作成
+# Create instance
 window = PySideTemplateWindow()
 window.show()
 ```
 
-#### 主要メソッド
+#### Key Methods
 
-| メソッド | 説明 |
-|----------|------|
-| `show()` | ウィンドウを表示します |
-| `set_instance(instance)` | インスタンスを GC から保護します。restore 時に呼びます |
+| Method | Description |
+|--------|-------------|
+| `show()` | Displays the window |
+| `set_instance(instance)` | Protects instance from garbage collection (called during restore) |
 
-#### クラス変数
+#### Class Variables
 
-| 変数 | 説明 |
-|------|------|
-| `NAME` | ウィンドウ名 (`'PySideTemplate'`) |
-| `WORKSPACE_CONTROL_NAME` | WorkspaceControl 名 (`'PySideTemplateWorkspaceControl'`) |
-| `_TITLE` | ウィンドウタイトル (`'PySide Template v1.0.1'`) |
+| Variable | Description |
+|----------|-------------|
+| `NAME` | Window name (`'PySideTemplate'`) |
+| `WORKSPACE_CONTROL_NAME` | WorkspaceControl name (`'PySideTemplateWorkspaceControl'`) |
+| `_TITLE` | Window title (`f'PySide Template v{__version__}'`) |
 
-### app.main モジュール
+### app.main Module
 
-| 関数 | 説明 |
-|------|------|
-| `start()` | 既存ウィンドウがある場合は再表示し、ない場合は新規作成します |
-| `restart()` | 既存の WorkspaceControl を削除して再生成します |
-| `restore()` | Maya 起動時やワークスペース切り替え時に自動実行されます |
+| Function | Description |
+|----------|-------------|
+| `start()` | Shows existing window if available, otherwise creates a new one |
+| `restart()` | Deletes existing WorkspaceControl and regenerates it |
+| `restore()` | Auto-executed during Maya startup or workspace switching |
 
-### utils モジュール
+### utils Module
 
-Maya 関連の共通機能をまとめたユーティリティモジュールです。
+Utility module containing Maya-related common functionality.
 
-| 関数/型 | 説明 |
-|---------|------|
-| `MayaPointer` | Maya UI ポインタの型安全な表現 |
-| `is_valid_maya_pointer()` | Maya ポインタの有効性をチェックします |
-| `get_maya_control_pointer()` | 型安全な Maya コントロールポインタを取得します |
-| `safe_wrap_instance()` | 型安全な wrapInstance を実行します |
-| `add_widget_to_maya_layout()` | 型安全な Maya レイアウト追加を行います |
+| Function/Type | Description |
+|---------------|-------------|
+| `MayaPointer` | Type-safe representation of Maya UI pointers |
+| `is_valid_maya_pointer()` | Validates Maya pointer integrity |
+| `get_maya_control_pointer()` | Retrieves type-safe Maya control pointers |
+| `safe_wrap_instance()` | Executes type-safe wrapInstance operations |
+| `add_widget_to_maya_layout()` | Safely adds widgets to Maya layouts |
 
-## カスタマイズ
-このパッケージを流用して実際のツールを作る場合のカスタマイズ方法について説明します。
+### Logging Configuration
 
-### 1. パッケージ名の変更
+Configures logging for development purposes. Maya defaults to INFO level.
 
-ツールの名前に応じて、パッケージ名（フォルダ名）を変更してください。
+| Function | Description |
+|----------|-------------|
+| `setup_logging(level)` | Configures logging for the package |
+
+```python
+# To output debug information
+from pyside_template_window import setup_logging
+import logging
+
+setup_logging(logging.DEBUG)  # Display debug information
+```
+
+## Customization
+
+Guidelines for adapting this package to create production tools.
+
+### 1. Package Name Modification
+
+Rename the package (folder name) to match your tool's identity.
 
 ```
-# 変更前
+# Before
 ~/Documents/maya/scripts/
 └── pyside_template_window/
 
-# 変更後（例）
+# After (example)
 ~/Documents/maya/scripts/
 └── your_custom_tool/
 ```
 
-**合わせての変更箇所**:
-- `app/main.py`, `app/start.py`, `app/restart.py`, `app/restore.py`内のimport文と関数名
+**Corresponding changes required**:
+- Import statements and function names in `app/main.py`, `app/start.py`, `app/restart.py`, `app/restore.py`
 
-### 2. クラス名の変更
+### 2. Class Name Modification
 
-クラス名も変更してください。
+Update the class name accordingly.
 
 ```python
-# 変更前
+# Before
 class PySideTemplateWindow(MayaQWidgetDockableMixin, QMainWindow):
     ...
 
-# 変更後（例）
+# After (example)
 class YourCustomWindow(MayaQWidgetDockableMixin, QMainWindow):
     ...
 ```
 
-**合わせての変更箇所**:
-- `window.py`の NAME、_TITLE 等のクラス変数
-- `app/main.py`内の参照
+**Corresponding changes required**:
+- Class variables such as NAME and _TITLE in `window.py`
+- References in `app/main.py`
 
-### 3. UIのカスタマイズ
+### 3. UI Customization
 
-`_init_ui()` メソッドを編集してUIを変更してください。
+Modify the `_init_ui()` method to implement your custom interface.
 
 ```python
 # window.py
 def _init_ui(self) -> None:
-    # ここにカスタムUIを実装
+    # Implement your custom UI here
     ...
 ```
 
-## 開発のベストプラクティス
+## Development Best Practices
 
-### 開発ワークフロー
+### Recommended Workflow
 
-1. コードを編集
-2. Maya内で以下のいずれかを実行:
-   - ウィンドウのDevメニューの「Restart」を押下
-   - `restart.py`の内容をスクリプトエディターにコピー&ペーストして実行
-3. 変更が即座に反映される
+1. Edit your code
+2. Execute one of the following in Maya:
+   - Click "Restart" from the window's Dev menu
+   - Copy and paste the contents of `restart.py` into the Script Editor and execute
+3. Changes are immediately reflected
 
-このフローを取れば素早く結果を確認できスムーズに開発を進めることができます。
+This workflow enables rapid iteration and streamlined development cycles.
 
-## よくある問題と解決法
+## Troubleshooting
 
-### Q: リロードが効かない
-A: ウィンドウのDevメニューから「Restart」を実行するか、`restart.py`の内容をスクリプトエディターにコピー&ペーストして実行してください。ただし、ここでのリロードはimportlib.reload()を使ったシンプルなものなので複雑なファイル構成のリロードには対応していません。
+### Q: Reload functionality isn't working
+A: Execute "Restart" from the window's Dev menu, or copy and paste the contents of `restart.py` into the Script Editor and execute it. Note that this reload mechanism uses simple `importlib.reload()`, which may not handle complex file structures effectively.
 
-### Q: 初回起動でもリロードしたい
-A: `start.py`の代わりに`restart.py`の内容をスクリプトエディターで実行してください。初回起動でリロードすること自体には全く問題はありません。
+### Q: I want to reload on initial launch
+A: Execute the contents of `restart.py` instead of `start.py` in the Script Editor. There's no issue with reloading during initial launch.
 
-### Q: ウィンドウを☓で閉じてもインスタンスが削除されていない
-A: PySideの仕様です。`start.py`の内容を再度スクリプトエディターで実行すれば再表示されます。
+### Q: Window was closed with ☓ but the instance remains
+A: This is expected PySide behavior. Execute the contents of `start.py` again in the Script Editor to redisplay the window.
 
-### Q: コードを編集していたら復元が機能しなくなった
-A: 復元は非常に繊細な仕組みで動いているため一度元のコードに戻した上で慎重に編集することをおすすめします。
+### Q: Restore functionality stopped working after code modifications
+A: The restore mechanism is quite delicate. It's recommended to revert to the original codebase and make changes incrementally and carefully.
 
-### Q: Maya2020でエラーが出た
-A: Maya2020以前には対応していません。
+### Q: Encountering errors in Maya 2020
+A: Maya 2020 and earlier versions are not supported by this template.
 
-## ライセンス
+## Translation
 
-このプロジェクトはMITライセンスの下で公開されています。詳細は[LICENSE](LICENSE)ファイルをご覧ください。
+The author of this project is a native Japanese speaker. Pull requests for improving English and Chinese translations are warmly welcomed.
 
+Any improvements to make the text more natural, better technical terminology, grammar fixes, or any other enhancements are greatly appreciated.
+
+## License
+
+This project is released under the MIT License. See the [LICENSE](LICENSE) file for details.

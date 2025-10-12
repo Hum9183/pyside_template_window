@@ -1,3 +1,4 @@
+import logging
 from typing import Optional
 
 from maya import cmds
@@ -10,6 +11,8 @@ except ImportError:
 from .. import utils
 from ..utils import MayaPointer
 from ..window import PySideTemplateWindow
+
+logger = logging.getLogger(__name__)
 
 
 def start() -> None:
@@ -24,16 +27,16 @@ def start() -> None:
     window_ptr: Optional[MayaPointer] = utils.get_maya_control_pointer(PySideTemplateWindow.NAME)
 
     if window_ptr is None:
-        print(f'{PySideTemplateWindow.NAME} が存在しないため生成します')
+        logger.debug(f'{PySideTemplateWindow.NAME} が存在しないため生成します')
         window = _generate()
         window.show()
     else:
-        print(f'すでに {PySideTemplateWindow.NAME} が存在しています')
+        logger.debug(f'すでに {PySideTemplateWindow.NAME} が存在しています')
         try:
             window = utils.safe_wrap_instance(window_ptr, QMainWindow)
             window.show()
         except RuntimeError as e:
-            print(f'{PySideTemplateWindow.NAME} の再表示に失敗しました: {e}')
+            logger.error(f'{PySideTemplateWindow.NAME} の再表示に失敗しました: {e}')
 
 
 def restart() -> None:
@@ -76,7 +79,9 @@ def restore() -> None:
         if window_ptr_valid is False:
             raise RuntimeError(f'{PySideTemplateWindow.NAME} の復元用ウィンドウポインタが無効です')
         if wsc_ptr_valid is False:
-            raise RuntimeError(f'{PySideTemplateWindow.WORKSPACE_CONTROL_NAME} の復元用 WorkspaceControl ポインタが無効です')
+            raise RuntimeError(
+                f'{PySideTemplateWindow.WORKSPACE_CONTROL_NAME} の復元用 WorkspaceControl ポインタが無効です'
+            )
 
 
 def _generate() -> PySideTemplateWindow:
