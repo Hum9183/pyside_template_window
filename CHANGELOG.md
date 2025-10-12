@@ -9,6 +9,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.1.0] - 2025-10-12
+
+### Added
+- VS Code development environment auto-configuration (`.vscode/extensions.json`, `.vscode/settings.json`)
+- Recommended settings for Python, Black, and isort extensions
+- Package-level logging configuration functionality (`setup_logging()`)
+- Systematic organization of multi-language documentation (`docs/` folder structure)
+- Japanese contribution guide (`docs/CONTRIBUTING.ja.md`)
+- English contribution guide (`CONTRIBUTING.md`)
+
+### Changed
+- Migration from `print()` statements to Python `logging` module
+- Improved documentation structure (multi-language support in `docs/` folder)
+- Auto-formatting configuration for enhanced code quality
+
+### Improved
+- Enhanced developer experience (VS Code environment auto-setup)
+- Streamlined contributor guidelines
+- Clarified project structure and documentation synchronization
+
 ## [1.0.1] - 2025-10-10
 
 ### Fixed

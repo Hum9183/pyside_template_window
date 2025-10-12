@@ -5,7 +5,29 @@
 フォーマットは[Keep a Changelog](https://keepachangelog.com/ja/1.0.0/)に準拠しており、
 このプロジェクトは[Semantic Versioning](http://semver.org/)に基づいています。
 
+[English Version](../CHANGELOG.md)
+
 ## [Unreleased]
+
+## [1.1.0] - 2025-10-12
+
+### Added
+- VS Code 開発環境の自動設定（`.vscode/extensions.json`, `.vscode/settings.json`）
+- Python、Black、isort 拡張機能の推奨設定
+- パッケージレベルのロギング設定機能（`setup_logging()`）
+- 多言語ドキュメントの体系的整理（`docs/` フォルダ構成）
+- 日本語版コントリビューションガイド（`docs/CONTRIBUTING.ja.md`）
+- 英語版コントリビューションガイド（`CONTRIBUTING.md`）
+
+### Changed
+- `print()` ステートメントから Python `logging` モジュールへの移行
+- ドキュメント構成の改善（`docs/` フォルダでの多言語対応）
+- コード品質向上のための自動フォーマット設定
+
+### Improved
+- 開発者エクスペリエンスの向上（VS Code 環境自動設定）
+- コントリビューター向けガイドラインの整備
+- プロジェクト構造の明確化とドキュメント同期
 
 ## [1.0.1] - 2025-10-10
 

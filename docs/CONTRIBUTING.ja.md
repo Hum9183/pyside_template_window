@@ -2,6 +2,8 @@
 
 Maya PySide テンプレートプロジェクトへの貢献をありがとうございます。
 
+[English Version](../CONTRIBUTING.md)
+
 ## 開発環境
 
 - **Maya**: 2022 以上

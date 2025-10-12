@@ -20,9 +20,9 @@
 
 ## 安装
 
-### 文件放置
+### 安装位置
 
-将项目放置在 Maya 的 scripts 文件夹或任何在 Python 路径中的目录。
+将项目安装到 Maya 的 scripts 文件夹或任何在 Python 路径中的目录。
 
 ```
 ~/Documents/maya/scripts/
@@ -47,7 +47,7 @@
 
 ### 开发时重启
 
-点击窗口Dev菜单中的"Restart"，或将 `restart.py` 的内容复制粘贴到脚本编辑器中并执行。这将重载模块并重启窗口。
+点击窗口开发菜单中的"Restart"，或将 `restart.py` 的内容复制粘贴到脚本编辑器中并执行。这将重载模块并重启窗口。
 
 ### Maya 启动时自动还原
 
@@ -57,23 +57,25 @@ Maya 启动时窗口会自动还原。`restore.py` 脚本处理此功能（不�
 
 ```
 pyside_template_window/
-├── __init__.py          # 包初始化
-├── _metadata.py         # 包元数据（版本、作者信息）
-├── window.py            # 主窗口类
-├── utils.py             # 实用工具函数
+├── __init__.py             # 包初始化
+├── _metadata.py            # 包元数据（版本、作者信息）
+├── window.py               # 主窗口类
+├── utils.py                # 实用工具函数
 ├── app/
-│   ├── __init__.py      # 应用包初始化
-│   ├── main.py          # 核心启动功能（start/restart/restore）
-│   ├── start.py         # 初次启动
-│   ├── restart.py       # 重启
-│   └── restore.py       # 还原
-├── README.md            # 日文文档
-├── README_EN.md         # 英文文档
-├── README_CN.md         # 本文件（中文文档）
-├── CHANGELOG.md         # 变更日志（日文）
-├── CHANGELOG_EN.md      # 变更日志（英文）
-├── CHANGELOG_CN.md      # 变更日志（中文）
-└── LICENSE              # 许可证信息
+│   ├── __init__.py         # 应用包初始化
+│   ├── main.py             # 核心启动功能（start/restart/restore）
+│   ├── start.py            # 初次启动
+│   ├── restart.py          # 重启
+│   └── restore.py          # 还原
+├── docs/
+│   ├── README.ja.md        # 日文文档
+│   ├── README.zh-CN.md     # 本文件（中文文档）
+│   ├── CHANGELOG.ja.md     # 变更日志（日文）
+│   └── CONTRIBUTING.ja.md  # 贡献指南（日文）
+├── README.md               # 英文文档
+├── CHANGELOG.md            # 变更日志（英文）
+├── CONTRIBUTING.md         # 贡献指南（英文）
+└── LICENSE                 # 许可证信息
 ```
 
 ## API 参考
@@ -106,7 +108,7 @@ window.show()
 |------|------|
 | `NAME` | 窗口名称 (`'PySideTemplate'`) |
 | `WORKSPACE_CONTROL_NAME` | WorkspaceControl 名称 (`'PySideTemplateWorkspaceControl'`) |
-| `_TITLE` | 窗口标题 (`'PySide Template v1.0.1'`) |
+| `_TITLE` | 窗口标题 (`f'PySide Template v{__version__}'`) |
 
 ### app.main 模块
 
@@ -146,11 +148,11 @@ setup_logging(logging.DEBUG)  # 显示调试信息
 
 ## 自定义
 
-适配此包以创建生产工具的指南。
+使用此包创建自定义工具的指南。
 
 ### 1. 包名修改
 
-根据工具的身份重命名包（文件夹名）。
+根据您的工具需求重命名包（文件夹名）。
 
 ```
 # 修改前
@@ -200,7 +202,7 @@ def _init_ui(self) -> None:
 
 1. 编辑代码
 2. 在 Maya 中执行以下操作之一：
-   - 点击窗口Dev菜单中的"Restart"
+   - 点击窗口开发菜单中的"Restart"
    - 将 `restart.py` 的内容复制粘贴到脚本编辑器中并执行
 3. 更改立即生效
 
@@ -209,7 +211,7 @@ def _init_ui(self) -> None:
 ## 疑难解答
 
 ### Q: 重载功能无效
-A: 从窗口的Dev菜单执行"Restart"，或将 `restart.py` 的内容复制粘贴到脚本编辑器中并执行。注意此重载机制使用简单的 `importlib.reload()`，可能无法有效处理复杂的文件结构。
+A: 从窗口的开发菜单执行"Restart"，或将 `restart.py` 的内容复制粘贴到脚本编辑器中并执行。注意此重载机制使用简单的 `importlib.reload()`，可能无法有效处理复杂的文件结构。
 
 ### Q: 希望在初次启动时重载
 A: 在脚本编辑器中执行 `restart.py` 的内容而非 `start.py`。初次启动时重载没有任何问题。
@@ -218,10 +220,16 @@ A: 在脚本编辑器中执行 `restart.py` 的内容而非 `start.py`。初次�
 A: 这是预期的 PySide 行为。在脚本编辑器中再次执行 `start.py` 的内容以重新显示窗口。
 
 ### Q: 代码修改后还原功能停止工作
-A: 还原机制相当脆弱。建议恢复到原始代码库并逐步谨慎地进行更改。
+A: 还原机制比较敏感。建议恢复到原始代码库并逐步谨慎地进行更改。
 
 ### Q: 在 Maya 2020 中遇到错误
 A: 此模板不支持 Maya 2020 及更早版本。
+
+## 翻译
+
+本项目作者为日语母语者。非常欢迎提交改进英语和中文翻译的 Pull Request。
+
+任何使文本更加自然、改善技术术语、语法修正或其他任何改进都非常感谢。
 
 ## 许可证
 

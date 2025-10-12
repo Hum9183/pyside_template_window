@@ -57,23 +57,25 @@ The window automatically restores when Maya starts. The `restore.py` script hand
 
 ```
 pyside_template_window/
-├── __init__.py          # Package initialization
-├── _metadata.py         # Package metadata (version, author info)
-├── window.py            # Main window class
-├── utils.py             # Utility functions
+├── __init__.py             # Package initialization
+├── _metadata.py            # Package metadata (version, author info)
+├── window.py               # Main window class
+├── utils.py                # Utility functions
 ├── app/
-│   ├── __init__.py      # App package initialization
-│   ├── main.py          # Core launch functionality (start/restart/restore)
-│   ├── start.py         # Initial launch
-│   ├── restart.py       # Restart
-│   └── restore.py       # Restore
-├── README.md            # Japanese documentation
-├── README_EN.md         # This file (English documentation)
-├── README_CN.md         # Chinese documentation
-├── CHANGELOG.md         # Changelog (Japanese)
-├── CHANGELOG_EN.md      # Changelog (English)
-├── CHANGELOG_CN.md      # Changelog (Chinese)
-└── LICENSE              # License information
+│   ├── __init__.py         # App package initialization
+│   ├── main.py             # Core launch functionality (start/restart/restore)
+│   ├── start.py            # Initial launch
+│   ├── restart.py          # Restart
+│   └── restore.py          # Restore
+├── docs/
+│   ├── README.ja.md        # Japanese documentation
+│   ├── README.zh-CN.md     # Chinese documentation
+│   ├── CHANGELOG.ja.md     # Changelog (Japanese)
+│   └── CONTRIBUTING.ja.md  # Contribution guide (Japanese)
+├── README.md               # This file (English documentation)
+├── CHANGELOG.md            # Changelog (English)
+├── CONTRIBUTING.md         # Contribution guide (English)
+└── LICENSE                 # License information
 ```
 
 ## API Reference
@@ -106,7 +108,7 @@ window.show()
 |----------|-------------|
 | `NAME` | Window name (`'PySideTemplate'`) |
 | `WORKSPACE_CONTROL_NAME` | WorkspaceControl name (`'PySideTemplateWorkspaceControl'`) |
-| `_TITLE` | Window title (`'PySide Template v1.0.1'`) |
+| `_TITLE` | Window title (`f'PySide Template v{__version__}'`) |
 
 ### app.main Module
 
@@ -222,6 +224,12 @@ A: The restore mechanism is quite delicate. It's recommended to revert to the or
 
 ### Q: Encountering errors in Maya 2020
 A: Maya 2020 and earlier versions are not supported by this template.
+
+## Translation
+
+The author of this project is a native Japanese speaker. Pull requests for improving English and Chinese translations are warmly welcomed.
+
+Any improvements to make the text more natural, better technical terminology, grammar fixes, or any other enhancements are greatly appreciated.
 
 ## License
 

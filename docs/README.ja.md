@@ -48,7 +48,7 @@ start.pyのテキストをMayaのスクリプトエディターで実行して�
 
 ### 開発時の再起動
 
-ウィンドウのDevメニューのRestartを押下してください。
+ウィンドウのDevメニューのRestartをクリックしてください。
 もしくはrestart.pyのテキストをスクリプトエディターで実行してください。
 これによりリロードされた状態で起動します。
 
@@ -61,23 +61,25 @@ restore.pyがそれにあたりますがこれはスクリプトエディター�
 
 ```
 pyside_template_window/
-├── __init__.py          # パッケージ初期化
-├── _metadata.py         # パッケージメタデータ（バージョン・作者情報）
-├── window.py            # メインウィンドウクラス
-├── utils.py             # ユーティリティ関数
+├── __init__.py             # パッケージ初期化
+├── _metadata.py            # パッケージメタデータ（バージョン・作者情報）
+├── window.py               # メインウィンドウクラス
+├── utils.py                # ユーティリティ関数
 ├── app/
-│   ├── __init__.py      # appパッケージ初期化
-│   ├── main.py          # 起動のコア機能（start/restart/restore）
-│   ├── start.py         # 初回起動
-│   ├── restart.py       # 再起動
-│   └── restore.py       # 復元
-├── README.md            # このファイル（日本語ドキュメント）
-├── README.en-US.md      # 英語版ドキュメント
-├── README.zh-CN.md      # 中国語版ドキュメント
-├── CHANGELOG.md         # 変更ログ（日本語）
-├── CHANGELOG.en-US.md   # 変更ログ（英語）
-├── CHANGELOG.zh-CN.md   # 変更ログ（中国語）
-└── LICENSE              # ライセンス情報
+│   ├── __init__.py         # appパッケージ初期化
+│   ├── main.py             # 起動のコア機能（start/restart/restore）
+│   ├── start.py            # 初回起動
+│   ├── restart.py          # 再起動
+│   └── restore.py          # 復元
+├── docs/
+│   ├── README.ja.md        # このファイル（日本語版ドキュメント）
+│   ├── README.zh-CN.md     # 中国語版ドキュメント
+│   ├── CHANGELOG.ja.md     # 変更ログ（日本語版）
+│   └── CONTRIBUTING.ja.md  # コントリビューションガイド（日本語版）
+├── README.md               # 英語版ドキュメント
+├── CHANGELOG.md            # 変更ログ（英語版）
+├── CONTRIBUTING.md         # コントリビューションガイド（英語版）
+└── LICENSE                 # ライセンス情報
 ```
 
 ## API リファレンス
@@ -110,7 +112,7 @@ window.show()
 |------|------|
 | `NAME` | ウィンドウ名 (`'PySideTemplate'`) |
 | `WORKSPACE_CONTROL_NAME` | WorkspaceControl 名 (`'PySideTemplateWorkspaceControl'`) |
-| `_TITLE` | ウィンドウタイトル (`'PySide Template v1.0.1'`) |
+| `_TITLE` | ウィンドウタイトル (`f'PySide Template v{__version__}'`) |
 
 ### app.main モジュール
 
@@ -203,7 +205,7 @@ def _init_ui(self) -> None:
 
 1. コードを編集
 2. Maya内で以下のいずれかを実行:
-   - ウィンドウのDevメニューの「Restart」を押下
+   - ウィンドウのDevメニューの「Restart」をクリック
    - `restart.py`の内容をスクリプトエディターにコピー&ペーストして実行
 3. 変更が即座に反映される
 
@@ -229,6 +231,12 @@ A: Maya2020以前には対応していません。
 ## 開発環境
 
 開発に参加される場合は、[CONTRIBUTING.md](CONTRIBUTING.md)をご覧ください。
+
+## 翻訳について
+
+このプロジェクトの作者は日本語話者です。英語版・中国語版ドキュメントの翻訳改善のPull Requestを歓迎しています。
+
+より自然な表現への修正、技術用語の改善、文法の修正など、どのような改善でもお気軽にご提案ください。
 
 ## ライセンス
 
