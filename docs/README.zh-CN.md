@@ -2,7 +2,7 @@
 
 基于 WorkspaceControl 的 Maya PySide 模板窗口项目，提供可停靠和可还原的窗口功能。
 
-[日本語版](README.md) | [English Version](README_EN.md)
+[日本語版](README.ja.md) | [English Version](../README.md)
 
 ## 特性
 
@@ -127,6 +127,22 @@ window.show()
 | `get_maya_control_pointer()` | 获取类型安全的 Maya 控件指针 |
 | `safe_wrap_instance()` | 执行类型安全的 wrapInstance 操作 |
 | `add_widget_to_maya_layout()` | 安全地将组件添加到 Maya 布局 |
+
+### 日志配置
+
+配置开发时的日志记录。Maya 默认为 INFO 级别。
+
+| 函数 | 说明 |
+|------|------|
+| `setup_logging(level)` | 为包配置日志记录 |
+
+```python
+# 输出调试信息时
+from pyside_template_window import setup_logging
+import logging
+
+setup_logging(logging.DEBUG)  # 显示调试信息
+```
 
 ## 自定义
 
