@@ -20,6 +20,12 @@ def setup_logging(log_level: int = logging.INFO) -> logging.Logger:
     Returns:
         logging.Logger: 設定されたパッケージロガー
 
+    Note:
+        Maya環境では基本的なログハンドラーが自動設定されるため、
+        NullHandlerの追加は不要です。一般的なPythonライブラリでは
+        logger.addHandler(logging.NullHandler()) が推奨されますが、
+        Maya専用ツールでは実質的に無意味です。
+
     Examples:
         >>> # 基本的な使用方法（INFO レベル）
         >>> logger = setup_logging()
