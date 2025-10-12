@@ -227,7 +227,7 @@ A: 此模板不支持 Maya 2020 及更早版本。
 
 ## 开发环境
 
-如需参与开发，请参阅 [CONTRIBUTING.md](CONTRIBUTING.md)。
+如需参与开发，请参阅 [CONTRIBUTING.md](../CONTRIBUTING.md)。
 
 ## 翻译
 
@@ -237,4 +237,4 @@ A: 此模板不支持 Maya 2020 及更早版本。
 
 ## 许可证
 
-此项目根据 MIT 许可证发布。详情请参见 [LICENSE](LICENSE) 文件。
+此项目根据 MIT 许可证发布。详情请参见 [LICENSE](../LICENSE) 文件。
