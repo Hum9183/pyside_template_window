@@ -9,6 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.1.2] - 2025-10-14
+
+### Changed
+- Improved function naming
+- Refactored workspace control attachment logic into reusable utility functions
+
+### Fixed
+- Fixed terminology consistency and language navigation links
+
+## [1.1.1] - 2025-10-12
+
+### Fixed
+- Fixed broken links in multilingual README files
+
 ## [1.1.0] - 2025-10-12
 
 ### Added

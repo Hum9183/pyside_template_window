@@ -15,7 +15,6 @@ except ImportError:
 from . import utils
 from ._metadata import __version__
 from .app import restart, restore
-from .utils import MayaPointer
 
 logger = logging.getLogger(__name__)
 
@@ -60,29 +59,11 @@ class PySideTemplateWindow(MayaQWidgetDockableMixin, QMainWindow):
             cmds.workspaceControl(wsc_name, e=True, restore=True)  # 再表示
             cmds.setFocus(PySideTemplateWindow.NAME)
         else:
-            self._show_internal()
-
-    def _show_internal(self) -> None:
-        """
-        新規 WorkspaceControl を作成してウィンドウを表示します
-        """
-        self._create_workspace_control()
-
-        window_ptr: Optional[MayaPointer] = utils.get_maya_control_pointer(PySideTemplateWindow.NAME)
-        wsc_ptr: Optional[MayaPointer] = utils.get_maya_control_pointer(PySideTemplateWindow.WORKSPACE_CONTROL_NAME)
-
-        # ポインタの有効性を個別にチェック
-        window_ptr_valid = window_ptr is not None
-        wsc_ptr_valid = wsc_ptr is not None
-
-        if window_ptr_valid and wsc_ptr_valid:
-            utils.add_widget_to_maya_layout(window_ptr, wsc_ptr)
+            self._create_workspace_control()
+            utils.attach_window_to_workspace_control(
+                PySideTemplateWindow.NAME, PySideTemplateWindow.WORKSPACE_CONTROL_NAME
+            )
             self.setWindowTitle(PySideTemplateWindow._TITLE)  # タイトルを書き換えたときに反映されるようにここでsetする
-        else:
-            if window_ptr_valid is False:
-                raise RuntimeError(f'{PySideTemplateWindow.NAME} のポインタの取得に失敗しました')
-            if wsc_ptr_valid is False:
-                raise RuntimeError(f'{PySideTemplateWindow.WORKSPACE_CONTROL_NAME} のポインタの取得に失敗しました')
 
     def _create_workspace_control(self) -> None:
         """
@@ -106,7 +87,7 @@ class PySideTemplateWindow(MayaQWidgetDockableMixin, QMainWindow):
         """
         # ボタン
         push_button = QPushButton('PUSH ME', self)
-        push_button.clicked.connect(lambda *args: self._print_hello_world())
+        push_button.clicked.connect(lambda *args: self._show_demo_message())
         self.setCentralWidget(push_button)
 
         # メニュー
@@ -116,7 +97,7 @@ class PySideTemplateWindow(MayaQWidgetDockableMixin, QMainWindow):
         restart_action.triggered.connect(lambda *args: restart.restart_pyside_template_window())
         dev_menu.addAction(restart_action)
 
-    def _print_hello_world(self) -> None:
+    def _show_demo_message(self) -> None:
         """
         ダミーのメッセージを出力します
         """
