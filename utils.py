@@ -20,29 +20,6 @@ MayaPointer = NewType('MayaPointer', int)
 T = TypeVar('T')
 
 
-def is_valid_maya_pointer(ptr: object) -> bool:
-    """Maya ポインタの有効性をチェックする
-
-    Maya から取得したポインタ値が有効かどうかを判定します。
-    None、負の値、変換不可能な値は無効として扱います。
-
-    Args:
-        ptr (object): チェック対象のオブジェクト
-
-    Returns:
-        bool: ポインタが有効な場合 True、無効な場合 False
-    """
-    if ptr is None:
-        return False
-
-    try:
-        # 正の整数に変換してチェック
-        int_ptr = int(ptr)
-        return int_ptr > 0
-    except (ValueError, TypeError):
-        return False
-
-
 def get_maya_control_pointer(control_name: str) -> Optional[MayaPointer]:
     """型安全な Maya コントロールのポインタを取得する
 
@@ -56,7 +33,7 @@ def get_maya_control_pointer(control_name: str) -> Optional[MayaPointer]:
         Optional[MayaPointer]: 有効なポインタまたは None
     """
     ptr = omui.MQtUtil.findControl(control_name)
-    if is_valid_maya_pointer(ptr):
+    if _is_valid_maya_pointer(ptr):
         return MayaPointer(int(ptr))
     return None
 
@@ -87,15 +64,43 @@ def safe_wrap_instance(ptr: MayaPointer, widget_type: Type[T]) -> T:
         raise RuntimeError(f'Maya ウィジェットのラップに失敗しました: {e}') from e
 
 
-def add_widget_to_maya_layout(window_ptr: MayaPointer, workspace_ptr: MayaPointer) -> None:
-    """型安全な Maya レイアウトへのウィジェット追加
+def attach_window_to_workspace_control(window_name: str, workspace_control_name: str) -> None:
+    """ウィンドウを WorkspaceControl にアタッチする（名前版）
 
-    指定されたウィンドウを Maya の WorkspaceControl レイアウトに追加します。
+    指定されたウィンドウと WorkspaceControl のポインタを取得し、
+    検証した上でウィンドウを WorkspaceControl にアタッチします。
+
+    Args:
+        window_name (str): ウィンドウの名前
+        workspace_control_name (str): WorkspaceControl の名前
+
+    Raises:
+        RuntimeError: ポインタの取得またはアタッチに失敗した場合
+    """
+    window_ptr: Optional[MayaPointer] = get_maya_control_pointer(window_name)
+    wsc_ptr: Optional[MayaPointer] = get_maya_control_pointer(workspace_control_name)
+
+    window_ptr_valid = window_ptr is not None
+    wsc_ptr_valid = wsc_ptr is not None
+
+    if window_ptr_valid and wsc_ptr_valid:
+        _add_widget_to_workspace_control(window_ptr, wsc_ptr)
+    else:
+        if not window_ptr_valid:
+            raise RuntimeError(f'{window_name} のポインタの取得に失敗しました')
+        if not wsc_ptr_valid:
+            raise RuntimeError(f'{workspace_control_name} のポインタの取得に失敗しました')
+
+
+def _add_widget_to_workspace_control(window_ptr: MayaPointer, workspace_ptr: MayaPointer) -> None:
+    """ウィジェットを WorkspaceControl に追加する（ポインタ版）
+
+    指定されたウィンドウポインタを WorkspaceControl レイアウトに直接追加します。
     追加に失敗した場合は詳細なエラー情報と共に例外を発生させます。
 
     Args:
         window_ptr (MayaPointer): ウィンドウポインタ
-        workspace_ptr (MayaPointer): ワークスペースポインタ
+        workspace_ptr (MayaPointer): WorkspaceControl ポインタ
 
     Raises:
         RuntimeError: レイアウト追加に失敗した場合
@@ -103,4 +108,27 @@ def add_widget_to_maya_layout(window_ptr: MayaPointer, workspace_ptr: MayaPointe
     try:
         omui.MQtUtil.addWidgetToMayaLayout(window_ptr, workspace_ptr)
     except Exception as e:
-        raise RuntimeError(f'Maya レイアウトへの追加に失敗: {e}') from e
+        raise RuntimeError(f'WorkspaceControl への追加に失敗: {e}') from e
+
+
+def _is_valid_maya_pointer(ptr: object) -> bool:
+    """Maya ポインタの有効性をチェックする
+
+    Maya から取得したポインタ値が有効かどうかを判定します。
+    None、負の値、変換不可能な値は無効として扱います。
+
+    Args:
+        ptr (object): チェック対象のオブジェクト
+
+    Returns:
+        bool: ポインタが有効な場合 True、無効な場合 False
+    """
+    if ptr is None:
+        return False
+
+    try:
+        # 正の整数に変換してチェック
+        int_ptr = int(ptr)
+        return int_ptr > 0
+    except (ValueError, TypeError):
+        return False

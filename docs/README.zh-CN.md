@@ -2,7 +2,7 @@
 
 基于 WorkspaceControl 的 Maya PySide 模板窗口项目，提供可停靠和可还原的窗口功能。
 
-[日本語版](README.ja.md) | [English Version](../README.md)
+[English Version](../README.md) | [日本語版](README.ja.md)
 
 ## 特性
 
@@ -22,7 +22,8 @@
 
 ### 安装位置
 
-将项目安装到 Maya 的 scripts 文件夹或任何在 Python 路径中的目录。
+软件包可以放置在 Python 路径中的任何位置。
+本 README 以 Maya 常用的 scripts 文件夹作为示例进行说明。
 
 ```
 ~/Documents/maya/scripts/
@@ -125,10 +126,9 @@ window.show()
 | 函数/类型 | 说明 |
 |-----------|------|
 | `MayaPointer` | Maya UI 指针的类型安全表示 |
-| `is_valid_maya_pointer()` | 验证 Maya 指针完整性 |
 | `get_maya_control_pointer()` | 获取类型安全的 Maya 控件指针 |
 | `safe_wrap_instance()` | 执行类型安全的 wrapInstance 操作 |
-| `add_widget_to_maya_layout()` | 安全地将组件添加到 Maya 布局 |
+| `attach_window_to_workspace_control()` | 将窗口附加到 WorkspaceControl 并进行验证 |
 
 ### 日志配置
 

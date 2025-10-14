@@ -28,7 +28,7 @@ def start() -> None:
 
     if window_ptr is None:
         logger.debug(f'{PySideTemplateWindow.NAME} が存在しないため生成します')
-        window = _generate()
+        window = _create()
         window.show()
     else:
         logger.debug(f'すでに {PySideTemplateWindow.NAME} が存在しています')
@@ -50,7 +50,7 @@ def restart() -> None:
         # すでに存在している workspaceControl は削除する
         cmds.deleteUI(PySideTemplateWindow.WORKSPACE_CONTROL_NAME, control=True)
 
-    window = _generate()
+    window = _create()
     window.show()
 
 
@@ -64,27 +64,13 @@ def restore() -> None:
     Raises:
         RuntimeError: 復元処理に失敗した場合
     """
-    window = _generate()
+    window = _create()
     PySideTemplateWindow.set_instance(window)  # GC に破棄される"可能性がある"ため保持しておく
 
-    window_ptr: Optional[MayaPointer] = utils.get_maya_control_pointer(PySideTemplateWindow.NAME)
-    wsc_ptr: Optional[MayaPointer] = utils.get_maya_control_pointer(PySideTemplateWindow.WORKSPACE_CONTROL_NAME)
-
-    window_ptr_valid = window_ptr is not None
-    wsc_ptr_valid = wsc_ptr is not None
-
-    if window_ptr_valid and wsc_ptr_valid:
-        utils.add_widget_to_maya_layout(window_ptr, wsc_ptr)
-    else:
-        if window_ptr_valid is False:
-            raise RuntimeError(f'{PySideTemplateWindow.NAME} の復元用ウィンドウポインタが無効です')
-        if wsc_ptr_valid is False:
-            raise RuntimeError(
-                f'{PySideTemplateWindow.WORKSPACE_CONTROL_NAME} の復元用 WorkspaceControl ポインタが無効です'
-            )
+    utils.attach_window_to_workspace_control(PySideTemplateWindow.NAME, PySideTemplateWindow.WORKSPACE_CONTROL_NAME)
 
 
-def _generate() -> PySideTemplateWindow:
+def _create() -> PySideTemplateWindow:
     """
     新しいウィンドウインスタンスを生成します
     """

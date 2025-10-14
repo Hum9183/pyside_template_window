@@ -22,8 +22,8 @@ Maya用のPySideテンプレートウィンドウプロジェクトです。Work
 
 ### ファイル配置
 
-Mayaのscriptsフォルダーにプロジェクトを配置してください。
-パスが通っている場所ならどこでもOKです。
+Pythonパスが通っている場所であればどこでも配置可能です。
+本READMEでは一般的なMayaのscriptsフォルダーを例として説明します。
 
 ```
 ~/Documents/maya/scripts/
@@ -129,10 +129,9 @@ Maya 関連の共通機能をまとめたユーティリティモジュールで
 | 関数/型 | 説明 |
 |---------|------|
 | `MayaPointer` | Maya UI ポインタの型安全な表現 |
-| `is_valid_maya_pointer()` | Maya ポインタの有効性をチェックします |
 | `get_maya_control_pointer()` | 型安全な Maya コントロールポインタを取得します |
 | `safe_wrap_instance()` | 型安全な wrapInstance を実行します |
-| `add_widget_to_maya_layout()` | 型安全な Maya レイアウト追加を行います |
+| `attach_window_to_workspace_control()` | ウィンドウを WorkspaceControl に検証付きでアタッチします |
 
 ### ロギング設定
 
@@ -230,7 +229,7 @@ A: Maya2020以前には対応していません。
 
 ## 開発環境
 
-開発に参加される場合は、[CONTRIBUTING.md](../CONTRIBUTING.md)をご覧ください。
+開発に参加される場合は、[CONTRIBUTING.ja.md](CONTRIBUTING.ja.md)をご覧ください。
 
 ## 翻訳について
 

@@ -22,7 +22,8 @@ A PySide template window project for Maya that provides dockable and restorable 
 
 ### File Placement
 
-Place the project in Maya's scripts folder or any directory in the Python path.
+The package can be placed anywhere in the Python path.
+This README uses Maya's common scripts folder as an example for demonstration.
 
 ```
 ~/Documents/maya/scripts/
@@ -125,10 +126,9 @@ Utility module containing Maya-related common functionality.
 | Function/Type | Description |
 |---------------|-------------|
 | `MayaPointer` | Type-safe representation of Maya UI pointers |
-| `is_valid_maya_pointer()` | Validates Maya pointer integrity |
 | `get_maya_control_pointer()` | Retrieves type-safe Maya control pointers |
 | `safe_wrap_instance()` | Executes type-safe wrapInstance operations |
-| `add_widget_to_maya_layout()` | Safely adds widgets to Maya layouts |
+| `attach_window_to_workspace_control()` | Attaches window to WorkspaceControl with validation |
 
 ### Logging Configuration
 
