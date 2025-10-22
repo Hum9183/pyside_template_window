@@ -149,6 +149,19 @@ import logging
 setup_logging(logging.DEBUG)  # デバッグ情報を表示
 ```
 
+## 実装について
+
+このテンプレートは `MayaQWidgetDockableMixin` を使用せず、Qt の仮想メソッドのオーバーライドを活用して同等の機能を実現しています。
+
+### 実装の要点
+
+- **setVisible() のオーバーライド**: Qt の仮想メソッドのオーバーライドにより、`wrapInstance()` でラップした QMainWindow でも Python の `setVisible()` が呼ばれます
+- **show() の制御**: `setVisible(True)` が呼ばれると内部で `show()` を呼び、WorkspaceControl の処理を行います
+- **カプセル化**: WorkspaceControl の処理はクラス内部に隠蔽され、呼び出し側に実装詳細が漏れません
+- **親ウィジェット**: WorkspaceControl を使用する場合、親は `None` で問題ありません
+
+この実装により、シンプルで保守しやすいコードになっています。
+
 ## カスタマイズ
 このパッケージを流用して実際のツールを作る場合のカスタマイズ方法について説明します。
 
@@ -175,11 +188,11 @@ setup_logging(logging.DEBUG)  # デバッグ情報を表示
 
 ```python
 # 変更前
-class PySideTemplateWindow(MayaQWidgetDockableMixin, QMainWindow):
+class PySideTemplateWindow(QMainWindow):
     ...
 
 # 変更後（例）
-class YourCustomWindow(MayaQWidgetDockableMixin, QMainWindow):
+class YourCustomWindow(QMainWindow):
     ...
 ```
 
@@ -227,7 +240,7 @@ A: 復元は非常に繊細な仕組みで動いているため一度元のコ�
 ### Q: Maya2020でエラーが出た
 A: Maya2020以前には対応していません。
 
-## 開発環境
+## コントリビューション
 
 開発に参加される場合は、[CONTRIBUTING.ja.md](CONTRIBUTING.ja.md)をご覧ください。
 
@@ -240,4 +253,3 @@ A: Maya2020以前には対応していません。
 ## ライセンス
 
 このプロジェクトはMITライセンスの下で公開されています。詳細は[LICENSE](../LICENSE)ファイルをご覧ください。
-

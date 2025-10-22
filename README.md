@@ -146,6 +146,19 @@ import logging
 setup_logging(logging.DEBUG)  # Display debug information
 ```
 
+## Implementation Details
+
+This template achieves equivalent functionality to `MayaQWidgetDockableMixin` without using it, by leveraging Qt's virtual method override mechanism.
+
+### Key Implementation Points
+
+- **setVisible() Override**: By overriding Qt's virtual method, Python's `setVisible()` is called even for QMainWindow objects wrapped with `wrapInstance()`
+- **show() Control**: When `setVisible(True)` is called, it internally calls `show()`, which handles WorkspaceControl processing
+- **Encapsulation**: WorkspaceControl processing is hidden within the class, preventing implementation details from leaking to callers
+- **Parent Widget**: When using WorkspaceControl, the parent can be `None` without issues
+
+This implementation results in simple, maintainable code.
+
 ## Customization
 
 Guidelines for adapting this package to create production tools.
@@ -173,11 +186,11 @@ Update the class name accordingly.
 
 ```python
 # Before
-class PySideTemplateWindow(MayaQWidgetDockableMixin, QMainWindow):
+class PySideTemplateWindow(QMainWindow):
     ...
 
 # After (example)
-class YourCustomWindow(MayaQWidgetDockableMixin, QMainWindow):
+class YourCustomWindow(QMainWindow):
     ...
 ```
 
@@ -224,6 +237,10 @@ A: The restore mechanism is quite delicate. It's recommended to revert to the or
 
 ### Q: Encountering errors in Maya 2020
 A: Maya 2020 and earlier versions are not supported by this template.
+
+## Contributing
+
+If you'd like to contribute to development, please see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Translation
 

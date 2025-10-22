@@ -9,6 +9,27 @@
 
 ## [Unreleased]
 
+## [1.2.0] - 2025-10-22
+
+### Changed
+- `MayaQWidgetDockableMixin` を継承しない実装に変更
+- `setVisible()` をオーバーライドして `show()` を呼ぶパターンでMixinと同等の機能を実現
+- 親ウィジェットを `None` に設定（WorkspaceControl が適切に管理）
+- ログ出力を整理し、主要メソッドに debug ログを追加
+- エラーハンドリングを簡素化（基本動作が安定したため）
+- ドキュメントを整理し、実装詳細と設計思想を分離
+
+### Added
+- すべてのエントリーポイントファイル（start.py, restart.py, restore.py）にコメントを追加
+
+### Fixed
+- restore 時にウィンドウタイトルが更新されない問題を修正
+
+### Improved
+- カプセル化の向上：WorkspaceControl の処理を完全にクラス内部に隠蔽
+- Qt の仮想メソッドのオーバーライドを活用した、より堅牢な実装
+- コードの可読性向上とメンテナンス性の改善
+
 ## [1.1.2] - 2025-10-14
 
 ### Changed

@@ -3,7 +3,6 @@ import logging
 from typing import ClassVar, Optional
 
 from maya import cmds
-from maya.app.general.mayaMixin import MayaQWidgetDockableMixin
 
 try:
     from PySide6.QtGui import QAction
@@ -19,11 +18,16 @@ from .app import restart, restore
 logger = logging.getLogger(__name__)
 
 
-class PySideTemplateWindow(MayaQWidgetDockableMixin, QMainWindow):
+class PySideTemplateWindow(QMainWindow):
     """
     Maya 用の PySide のテンプレートウィンドウクラス
 
     WorkspaceControl を使用して Maya の UI にドッキング可能(Dockable)かつ復元(Restore)可能なウィンドウです。
+
+    Implementation Note:
+        このクラスは MayaQWidgetDockableMixin を使用せず、Qt の仮想メソッドのオーバーライドを利用して
+        同等の機能を実現しています。setVisible() をオーバーライドすることで、wrapInstance() でラップした
+        QMainWindow オブジェクトに対しても show() の動作を制御できるようにしています。
     """
 
     NAME: ClassVar[str] = 'PySideTemplate'
@@ -32,6 +36,16 @@ class PySideTemplateWindow(MayaQWidgetDockableMixin, QMainWindow):
     _instance: ClassVar[Optional['PySideTemplateWindow']] = None  # GC に破棄されないように保持しておく用
 
     def __init__(self, parent: Optional[QWidget] = None, *args, **kwargs) -> None:
+        """
+        Args:
+            parent: 親ウィジェット（通常は None で問題ありません）
+
+        Note:
+            一般的な PySide ウィンドウでは Maya のメインウィンドウを親に設定しますが、
+            WorkspaceControl を使用する場合は親は None のままで問題ありません。
+            WorkspaceControl が適切に親子関係を管理するため、Maya 終了時にウィンドウも
+            正しく閉じられ、restore 機能も正常に動作します。
+        """
         super().__init__(parent=parent, *args, **kwargs)
         self.setObjectName(PySideTemplateWindow.NAME)
         self._init_ui()
@@ -45,25 +59,62 @@ class PySideTemplateWindow(MayaQWidgetDockableMixin, QMainWindow):
         """
         ウィンドウを表示します
 
-        既存の WorkspaceControl がある場合は復元し、ない場合は新規作成します。
+        既存の WorkspaceControl がある場合は再表示し、ない場合は新規作成します。
+
+        Note:
+            このメソッドは以下のタイミングで呼ばれます：
+            - 初回作成時: start() → _create() → show()
+            - 再表示時: start() → QMainWindow.show() → setVisible() → show()
+            - 再起動時: restart() → _create() → show()
+            - 復元時: restore() → omui.MQtUtil.addWidgetToMayaLayout() → show()
         """
         wsc_name = PySideTemplateWindow.WORKSPACE_CONTROL_NAME
         wsc_exists = cmds.workspaceControl(wsc_name, q=True, exists=True)
         if wsc_exists:
-            # 一度ウィンドウを出して、閉じて、もう一度呼び出したときに通る
-            # (つまり wsc は存在するがウィンドウとしては非表示になっている場合)
+            # 再表示時と復元時に通る
+            # wsc もウィンドウも存在するが非表示になっている場合
+            logger.debug(f'{self.show.__name__}(): WorkspaceControl が存在 → 再表示')
 
             # override した show() 内で self.setVisible() や super().setVisible() を呼ぶと
             # 無限ループするため、QWidget.setVisible()を直接呼び出す
             QWidget.setVisible(self, True)
-            cmds.workspaceControl(wsc_name, e=True, restore=True)  # 再表示
-            cmds.setFocus(PySideTemplateWindow.NAME)
+            cmds.workspaceControl(wsc_name, e=True, restore=True)
         else:
+            logger.debug(f'{self.show.__name__}(): WorkspaceControl が存在しない → 新規作成')
             self._create_workspace_control()
             utils.attach_window_to_workspace_control(
                 PySideTemplateWindow.NAME, PySideTemplateWindow.WORKSPACE_CONTROL_NAME
             )
-            self.setWindowTitle(PySideTemplateWindow._TITLE)  # タイトルを書き換えたときに反映されるようにここでsetする
+
+        # すべてのケースで最新のタイトルを設定
+        # WorkspaceControl の label を設定すれば十分で、setWindowTitle() は不要
+        cmds.workspaceControl(wsc_name, e=True, label=PySideTemplateWindow._TITLE)
+
+    def setVisible(self, visible: bool) -> None:
+        """
+        ウィジェットの表示状態を設定します
+
+        Qt の仮想メソッドのオーバーライドにより、C++ 側から呼ばれる setVisible() を Python で override します。
+        これにより、wrapInstance() でラップした QMainWindow オブジェクトの show() を呼んでも、
+        この Python メソッドが実行されます。
+
+        実装の意図:
+            QMainWindow.show() は内部で setVisible(True) を呼ぶため、setVisible() を
+            オーバーライドすることで、show() の動作を制御できます。setVisible() 内で
+            show() を呼ぶことで、WorkspaceControl の処理をこのクラス内部に隠蔽し、
+            呼び出し側（start() 関数）に実装の詳細が漏れ出さないようにしています。
+            この実装パターンは MayaQWidgetDockableMixin と同じです。
+
+        Note:
+            setVisible(True) が呼ばれると show() を呼び、show() 内で WorkspaceControl の
+            再表示処理を行います。
+        """
+        if visible:
+            logger.debug(f'{self.setVisible.__name__}(True): show() を呼びます')
+            self.show()
+        else:
+            logger.debug(f'{self.setVisible.__name__}(False): ウィンドウを非表示にします')
+            QWidget.setVisible(self, False)
 
     def _create_workspace_control(self) -> None:
         """
@@ -85,17 +136,17 @@ class PySideTemplateWindow(MayaQWidgetDockableMixin, QMainWindow):
 
         UI をカスタマイズする場合はこのメソッドを編集してください。
         """
-        # ボタン
-        push_button = QPushButton('PUSH ME', self)
-        push_button.clicked.connect(lambda *args: self._show_demo_message())
-        self.setCentralWidget(push_button)
-
         # メニュー
         menu_bar = self.menuBar()
         dev_menu = menu_bar.addMenu('Dev')
         restart_action = QAction('Restart', self)
         restart_action.triggered.connect(lambda *args: restart.restart_pyside_template_window())
         dev_menu.addAction(restart_action)
+
+        # ボタン
+        push_button = QPushButton('PUSH ME', self)
+        push_button.clicked.connect(lambda *args: self._show_demo_message())
+        self.setCentralWidget(push_button)
 
     def _show_demo_message(self) -> None:
         """

@@ -146,6 +146,19 @@ import logging
 setup_logging(logging.DEBUG)  # 显示调试信息
 ```
 
+## 实现细节
+
+本模板不使用 `MayaQWidgetDockableMixin`，而是通过利用 Qt 虚方法重写机制实现等效功能。
+
+### 实现要点
+
+- **setVisible() 重写**：通过重写 Qt 虚方法，即使对于使用 `wrapInstance()` 包装的 QMainWindow 对象，也会调用 Python 的 `setVisible()`
+- **show() 控制**：当调用 `setVisible(True)` 时，它在内部调用 `show()`，后者处理 WorkspaceControl 相关逻辑
+- **封装性**：WorkspaceControl 处理逻辑隐藏在类内部，防止实现细节泄露给调用方
+- **父窗口部件**：使用 WorkspaceControl 时，父窗口部件可以为 `None`
+
+这种实现方式使代码简洁且易于维护。
+
 ## 自定义
 
 使用此包创建自定义工具的指南。
@@ -173,11 +186,11 @@ setup_logging(logging.DEBUG)  # 显示调试信息
 
 ```python
 # 修改前
-class PySideTemplateWindow(MayaQWidgetDockableMixin, QMainWindow):
+class PySideTemplateWindow(QMainWindow):
     ...
 
 # 修改后（示例）
-class YourCustomWindow(MayaQWidgetDockableMixin, QMainWindow):
+class YourCustomWindow(QMainWindow):
     ...
 ```
 
@@ -225,7 +238,7 @@ A: 还原机制比较敏感。建议恢复到原始代码库并逐步谨慎地�
 ### Q: 在 Maya 2020 中遇到错误
 A: 此模板不支持 Maya 2020 及更早版本。
 
-## 开发环境
+## 贡献
 
 如需参与开发，请参阅 [CONTRIBUTING.md](../CONTRIBUTING.md)。
 
@@ -237,4 +250,4 @@ A: 此模板不支持 Maya 2020 及更早版本。
 
 ## 许可证
 
-此项目根据 MIT 许可证发布。详情请参见 [LICENSE](../LICENSE) 文件。
+本项目采用 MIT 许可证发布。详情请参见 [LICENSE](../LICENSE) 文件。
