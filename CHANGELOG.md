@@ -9,6 +9,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.2.0] - 2025-10-22
+
+### Changed
+- Changed implementation to not inherit from `MayaQWidgetDockableMixin`
+- Achieved equivalent functionality to the Mixin by overriding `setVisible()` to call `show()`
+- Set parent widget to `None` (appropriately managed by WorkspaceControl)
+- Reorganized logging output and added debug logs to key methods
+- Simplified error handling (due to stabilized core functionality)
+- Reorganized documentation, separating implementation details from design philosophy
+
+### Added
+- Added comments to all entry point files (start.py, restart.py, restore.py)
+
+### Fixed
+- Fixed issue where window title was not updated during restore
+
+### Improved
+- Enhanced encapsulation: WorkspaceControl processing is completely hidden within the class
+- More robust implementation leveraging Qt virtual method overrides
+- Improved code readability and maintainability
+
 ## [1.1.2] - 2025-10-14
 
 ### Changed

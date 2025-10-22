@@ -5,6 +5,8 @@
 
 このモジュールは inspect.getsource() で取得して Dev メニューの Restart から実行することを想定しています。
 ただしコピー&ペーストして Maya のスクリプトエディターで直接実行しても構いません。
+
+実装を直接記述せず、main.restart() を呼び出すことで、開発中の変更の影響を受けないようにしています。
 """
 
 
@@ -14,11 +16,6 @@ def restart_pyside_template_window() -> None:
 
     既存の WorkspaceControl を削除してから新しいウィンドウを作成します。
     モジュールを増やした場合は importlib.reload() する処理を適宜追加してください。
-
-    処理内容:
-        1. 関連モジュールのリロード（window, main）
-        2. 既存 WorkspaceControl の削除
-        3. 新しいウィンドウインスタンスの作成・表示
     """
     import importlib
     import logging
