@@ -20,8 +20,8 @@ def restart_pyside_template_window() -> None:
     import importlib
     import logging
 
-    from pyside_template_window import window
-    from pyside_template_window.app import main
+    from pyside_template_window import window  # type: ignore
+    from pyside_template_window.app import main  # type: ignore
 
     logger = logging.getLogger(__name__)
 

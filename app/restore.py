@@ -15,7 +15,7 @@ def restore_pyside_template_window() -> None:
 
     新しいウィンドウインスタンスを作成し、WorkspaceControl に適切に配置します。
     """
-    from pyside_template_window import restore
+    from pyside_template_window import restore  # type: ignore
 
     restore()
 

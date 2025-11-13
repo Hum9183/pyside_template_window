@@ -4,9 +4,9 @@ from typing import Optional
 from maya import cmds
 
 try:
-    from PySide6.QtWidgets import QMainWindow
+    from PySide6.QtWidgets import QMainWindow  # type: ignore
 except ImportError:
-    from PySide2.QtWidgets import QMainWindow
+    from PySide2.QtWidgets import QMainWindow  # type: ignore
 
 from .. import utils
 from ..utils import MayaPointer

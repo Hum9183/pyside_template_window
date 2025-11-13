@@ -5,11 +5,11 @@ from typing import ClassVar, Optional
 from maya import cmds
 
 try:
-    from PySide6.QtGui import QAction
-    from PySide6.QtWidgets import QMainWindow, QPushButton, QWidget
+    from PySide6.QtGui import QAction  # type: ignore
+    from PySide6.QtWidgets import QMainWindow, QPushButton, QWidget  # type: ignore
 except ImportError:
-    from PySide2.QtWidgets import QAction
-    from PySide2.QtWidgets import QMainWindow, QPushButton, QWidget
+    from PySide2.QtWidgets import QAction  # type: ignore
+    from PySide2.QtWidgets import QMainWindow, QPushButton, QWidget  # type: ignore
 
 from . import utils
 from ._metadata import __version__
