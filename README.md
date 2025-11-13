@@ -101,7 +101,6 @@ window.show()
 | Method | Description |
 |--------|-------------|
 | `show()` | Displays the window |
-| `set_instance(instance)` | Protects instance from garbage collection (called during restore) |
 
 #### Class Variables
 
