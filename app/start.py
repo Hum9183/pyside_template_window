@@ -18,7 +18,7 @@ def start_pyside_template_window() -> None:
 
     既存のウィンドウがある場合は再表示し、ない場合は新規作成します。
     """
-    from pyside_template_window import start
+    from pyside_template_window import start  # type: ignore
 
     start()
 

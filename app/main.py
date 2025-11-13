@@ -4,9 +4,9 @@ from typing import Optional
 from maya import cmds
 
 try:
-    from PySide6.QtWidgets import QMainWindow
+    from PySide6.QtWidgets import QMainWindow  # type: ignore
 except ImportError:
-    from PySide2.QtWidgets import QMainWindow
+    from PySide2.QtWidgets import QMainWindow  # type: ignore
 
 from .. import utils
 from ..utils import MayaPointer
@@ -61,7 +61,6 @@ def restore() -> None:
     """
     logger.debug(f'{restore.__name__}(): Maya が自動で WorkspaceControl を生成しています')
     window = _create()
-    PySideTemplateWindow.set_instance(window)  # GC に破棄される"可能性がある"ため保持しておく
 
     # restore() のコンテキストでは WorkspaceControl は Maya が自動で生成するため、
     # utils.attach_window_to_workspace_control() を使ってウィジェットを追加します

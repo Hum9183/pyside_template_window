@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.3.0] - 2025-11-13
+
+### Changed
+- Changed GC protection to be automatically applied within `__init__`
+  - Instance is saved to `_instance` immediately after `super().__init__()` (protects from errors during UI initialization)
+  - Documented GC collection conditions in detail within `__init__` docstring
+
+### Removed
+- Removed `set_instance()` class method (breaking change: no longer needed as internal implementation)
+
 ## [1.2.0] - 2025-10-22
 
 ### Changed

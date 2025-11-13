@@ -5,11 +5,11 @@ from typing import ClassVar, Optional
 from maya import cmds
 
 try:
-    from PySide6.QtGui import QAction
-    from PySide6.QtWidgets import QMainWindow, QPushButton, QWidget
+    from PySide6.QtGui import QAction  # type: ignore
+    from PySide6.QtWidgets import QMainWindow, QPushButton, QWidget  # type: ignore
 except ImportError:
-    from PySide2.QtWidgets import QAction
-    from PySide2.QtWidgets import QMainWindow, QPushButton, QWidget
+    from PySide2.QtWidgets import QAction  # type: ignore
+    from PySide2.QtWidgets import QMainWindow, QPushButton, QWidget  # type: ignore
 
 from . import utils
 from ._metadata import __version__
@@ -33,7 +33,7 @@ class PySideTemplateWindow(QMainWindow):
     NAME: ClassVar[str] = 'PySideTemplate'
     WORKSPACE_CONTROL_NAME: ClassVar[str] = f'{NAME}WorkspaceControl'
     _TITLE: ClassVar[str] = f'PySide Template v{__version__}'
-    _instance: ClassVar[Optional['PySideTemplateWindow']] = None  # GC に破棄されないように保持しておく用
+    _instance: ClassVar[Optional['PySideTemplateWindow']] = None
 
     def __init__(self, parent: Optional[QWidget] = None, *args, **kwargs) -> None:
         """
@@ -45,15 +45,20 @@ class PySideTemplateWindow(QMainWindow):
             WorkspaceControl を使用する場合は親は None のままで問題ありません。
             WorkspaceControl が適切に親子関係を管理するため、Maya 終了時にウィンドウも
             正しく閉じられ、restore 機能も正常に動作します。
+
+            インスタンスは _instance クラス変数で保持され GC から保護されます。
+            以下のタイミングで GC の影響を受ける可能性があります：
+            1. restore 時: omui.MQtUtil.addWidgetToMayaLayout() は C++ 側でレイアウトに
+               追加するのみで Python インスタンスへの参照を保持しないため GC されます
+            2. restart 時: Qt のシグナル接続が self への参照を保持しない場合に GC されます
+               例: button.clicked.connect(lambda: external_func())
+               接続先が self.method なら self への参照を保持しますが、外部関数のみを接続
+               する場合は window インスタンスへの参照が存在せず restart 直後に GC されます
         """
         super().__init__(parent=parent, *args, **kwargs)
+        PySideTemplateWindow._instance = self
         self.setObjectName(PySideTemplateWindow.NAME)
         self._init_ui()
-
-    @classmethod
-    def set_instance(cls, instance: 'PySideTemplateWindow') -> None:
-        """インスタンスをクラス変数で保持して GC から保護する"""
-        cls._instance = instance
 
     def show(self) -> None:
         """

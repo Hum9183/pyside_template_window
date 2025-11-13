@@ -10,9 +10,9 @@ from typing import NewType, Optional, Type, TypeVar
 from maya import OpenMayaUI as omui
 
 try:
-    from shiboken6 import wrapInstance
+    from shiboken6 import wrapInstance  # type: ignore
 except ImportError:
-    from shiboken2 import wrapInstance
+    from shiboken2 import wrapInstance  # type: ignore
 
 # Maya 専用型の定義
 MayaPointer = NewType('MayaPointer', int)
@@ -86,9 +86,9 @@ def attach_window_to_workspace_control(window_name: str, workspace_control_name:
     if window_ptr_valid and wsc_ptr_valid:
         _add_widget_to_workspace_control(window_ptr, wsc_ptr)
     else:
-        if not window_ptr_valid:
+        if window_ptr_valid is False:
             raise RuntimeError(f'{window_name} のポインタの取得に失敗しました')
-        if not wsc_ptr_valid:
+        if wsc_ptr_valid is False:
             raise RuntimeError(f'{workspace_control_name} のポインタの取得に失敗しました')
 
 
