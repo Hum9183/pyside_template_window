@@ -47,10 +47,9 @@ class PySideTemplateWindow(QMainWindow):
             正しく閉じられ、restore 機能も正常に動作します。
 
             インスタンスは _instance クラス変数で保持され GC から保護されます。
-
+            以下のタイミングで GC の影響を受ける可能性があります：
             1. restore 時: omui.MQtUtil.addWidgetToMayaLayout() は C++ 側でレイアウトに
                追加するのみで Python インスタンスへの参照を保持しないため GC されます
-
             2. restart 時: Qt のシグナル接続が self への参照を保持しない場合に GC されます
                例: button.clicked.connect(lambda: external_func())
                接続先が self.method なら self への参照を保持しますが、外部関数のみを接続
